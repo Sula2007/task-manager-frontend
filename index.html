@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Smart Task Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Auth Section -->
+    <div id="authSection" class="auth-wrapper">
+        <div class="auth-container">
+            <div class="auth-brand">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <h1>TaskFlow</h1>
+                </div>
+                <p class="tagline">Manage tasks like a pro</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <h2>Welcome Back! 👋</h2>
+                <p class="subtitle">Sign in to continue</p>
+                <form id="loginFormElement">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span>Sign In</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                <p class="switch-text">Don't have an account? <a href="#" id="showRegister">Sign up</a></p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form">
+                <h2>Create Account 🚀</h2>
+                <p class="subtitle">Join TaskFlow today</p>
+                <form id="registerFormElement">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="registerUsername" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="registerEmail" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="registerPassword" placeholder="Password (min 6 chars)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span>Create Account</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                <p class="switch-text">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Section -->
+    <div id="appSection" class="app-wrapper" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <h2>TaskFlow</h2>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-link" data-page="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>My Tasks</span>
+                    <span class="badge" id="tasksBadge">0</span>
+                </a>
+                <a href="#" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar">U</div>
+                    <div class="info">
+                        <div class="name" id="userName">User</div>
+                        <div class="email">Free Plan</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page active">
+                <div class="page-header">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p>Your productivity overview</p>
+                    </div>
+                    <button class="btn btn-primary" id="quickAddTask">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Task</span>
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="content">
+                            <div class="value" id="statTotal">0</div>
+                            <div class="label">Total Tasks</div>
+                        </div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="content">
+                            <div class="value" id="statCompleted">0</div>
+                            <div class="label">Completed</div>
+                        </div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="content">
+                            <div class="value" id="statPending">0</div>
+                            <div class="label">Pending</div>
+                        </div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="content">
+                            <div class="value" id="statOverdue">0</div>
+                            <div class="label">Overdue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Tasks -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-calendar-alt"></i> Upcoming Tasks</h3>
+                        <a href="#" data-page="tasks">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div id="upcomingTasksList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div id="tasksPage" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1>My Tasks</h1>
+                        <p>Manage your tasks efficiently</p>
+                    </div>
+                    <button class="btn btn-primary" id="addTaskBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>New Task</span>
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-tabs">
+                        <button class="tab active" data-filter="all">All</button>
+                        <button class="tab" data-filter="pending">Pending</button>
+                        <button class="tab" data-filter="in-progress">In Progress</button>
+                        <button class="tab" data-filter="completed">Completed</button>
+                    </div>
+                    <div class="filter-controls">
+                        <select id="filterPriority">
+                            <option value="">All Priorities</option>
+                            <option value="urgent">🔴 Urgent</option>
+                            <option value="high">🟠 High</option>
+                            <option value="medium">🟡 Medium</option>
+                            <option value="low">🟢 Low</option>
+                        </select>
+                        <select id="sortTasks">
+                            <option value="createdAt">Latest</option>
+                            <option value="dueDate">Due Date</option>
+                            <option value="priority">Priority</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tasks Grid -->
+                <div id="tasksList" class="tasks-grid"></div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1>Settings</h1>
+                        <p>Manage your account</p>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-user"></i> Profile</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" id="profileUsername" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="profileEmail" class="form-input">
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    <span>Save Changes</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bell"></i> Notifications</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="preferencesForm">
+                                <div class="toggle-item">
+                                    <div>
+                                        <label>Email Notifications</label>
+                                        <p>Receive email updates</p>
+                                    </div>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="emailNotifications" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-item">
+                                    <div>
+                                        <label>Task Reminders</label>
+                                        <p>Get reminded about deadlines</p>
+                                    </div>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="taskReminders" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    <span>Save Preferences</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Task</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="taskForm" class="modal-body">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="taskTitle" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="taskDescription" class="form-input" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="taskStatus" class="form-input">
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="taskPriority" class="form-input">
+                            <option value="low">🟢 Low</option>
+                            <option value="medium" selected>🟡 Medium</option>
+                            <option value="high">🟠 High</option>
+                            <option value="urgent">🔴 Urgent</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="date" id="taskDueDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="taskCategory" class="form-input" placeholder="Work, Personal...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span>Save Task</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Details Modal -->
+    <div id="taskDetailsModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="detailsTaskTitle">Task Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="taskDetailsContent"></div>
+                <div class="comments-section">
+                    <h4><i class="fas fa-comments"></i> Comments</h4>
+                    <div id="commentsList"></div>
+                    <form id="addCommentForm">
+                        <input type="text" id="commentInput" class="form-input" placeholder="Add a comment...">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
